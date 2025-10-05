@@ -18,6 +18,14 @@ mongo = None
 
 def create_app(config_name='default'):
     app = Flask(__name__)
+    CORS(app, resources={
+        r"/api/*": {
+            "origins": [
+                "https://athlete-injury-prediction.onrender.com",
+                "http://localhost:3000"
+            ]
+        }
+    })
     
     # Import and apply configuration
     from config import config
