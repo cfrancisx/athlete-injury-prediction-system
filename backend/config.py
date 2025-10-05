@@ -2,6 +2,32 @@ import os
 from datetime import timedelta
 
 class Config:
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key'
+    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'jwt-dev-secret'
+    
+    # Use SQLite for development, PostgreSQL for production
+    if os.environ.get('DATABASE_URL'):
+        # Production - PostgreSQL on Render
+        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL').replace('postgres://', 'postgresql://')
+    else:
+        # Development - SQLite
+        SQLALCHEMY_DATABASE_URI = 'sqlite:///athlete_safety.db'
+    
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+
+class ProductionConfig(Config):
+    DEBUG = False
+
+config = {
+    'development': DevelopmentConfig,
+    'production': ProductionConfig,
+    'default': DevelopmentConfig
+}
+
+class Config:
     # Load environment variables
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-this'
     
