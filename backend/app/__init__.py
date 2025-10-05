@@ -19,23 +19,25 @@ mongo = None
 def create_app(config_name='default'):
     app = Flask(__name__)
     
+    def create_app(config_name='default'):
+    app = Flask(__name__)
+    
+    # Updated CORS with your actual frontend URL
     CORS(app, 
          resources={
              r"/*": {
                  "origins": [
-                     "https://athlete-injury-prediction.onrender.com",  # Your NEW frontend URL
+                     "https://athlete-injury-prediction.onrender.com",  # Your actual frontend
                      "http://localhost:3000"
                  ],
                  "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-                 "allow_headers": [
-                     "Content-Type", 
-                     "Authorization", 
-                     "X-Requested-With"
-                 ],
+                 "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"],
                  "supports_credentials": True,
                  "max_age": 3600
              }
          })
+    
+    # ... rest of your create_app code
     # ... rest of your code
     
     # Import and apply configuration
