@@ -15,3 +15,11 @@ if __name__ == '__main__':
     
     debug_mode = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
     app.run(debug=debug_mode, host='0.0.0.0', port=5000)
+    
+    @app.route('/api/health')
+def health_check():
+    return {'status': 'healthy', 'backend': 'running'}
+
+@app.route('/')
+def home():
+    return {'message': 'Athlete Injury Prediction API', 'status': 'active'}

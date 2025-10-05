@@ -19,26 +19,24 @@ mongo = None
 def create_app(config_name='default'):
     app = Flask(__name__)
     
-    # COMPREHENSIVE CORS CONFIGURATION - FIXED
     CORS(app, 
          resources={
-             r"/*": {  # Changed from r"/api/*" to r"/*" to cover all routes
+             r"/*": {
                  "origins": [
-                     "https://athlete-injury-prediction-system-1.onrender.com",  # YOUR EXACT FRONTEND
-                     "http://localhost:3000",
-                     "http://localhost:5000"
+                     "https://athlete-injury-prediction.onrender.com",  # Your NEW frontend URL
+                     "http://localhost:3000"
                  ],
                  "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
                  "allow_headers": [
                      "Content-Type", 
                      "Authorization", 
-                     "Access-Control-Allow-Credentials",
                      "X-Requested-With"
                  ],
                  "supports_credentials": True,
                  "max_age": 3600
              }
          })
+    # ... rest of your code
     
     # Import and apply configuration
     from config import config
