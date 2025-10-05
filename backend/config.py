@@ -1,14 +1,18 @@
 import os
-from datetime import timedelta
+import re
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key'
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'jwt-dev-secret'
     
-    # Use SQLite for development, PostgreSQL for production
+    # Handle both SQLite (dev) and PostgreSQL (production)
     if os.environ.get('DATABASE_URL'):
         # Production - PostgreSQL on Render
-        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL').replace('postgres://', 'postgresql://')
+        db_url = os.environ.get('DATABASE_URL')
+        # Ensure it starts with postgresql:// not postgres://
+        if db_url.startswith('postgres://'):
+            db_url = db_url.replace('postgres://', 'postgresql://', 1)
+        SQLALCHEMY_DATABASE_URI = db_url
     else:
         # Development - SQLite
         SQLALCHEMY_DATABASE_URI = 'sqlite:///athlete_safety.db'
