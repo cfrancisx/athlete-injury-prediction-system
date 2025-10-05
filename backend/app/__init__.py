@@ -18,14 +18,27 @@ mongo = None
 
 def create_app(config_name='default'):
     app = Flask(__name__)
-    CORS(app, resources={
-        r"/api/*": {
-            "origins": [
-                "https://athlete-injury-prediction.onrender.com",
-                "http://localhost:3000"
-            ]
-        }
-    })
+    
+    # COMPREHENSIVE CORS CONFIGURATION - FIXED
+    CORS(app, 
+         resources={
+             r"/*": {  # Changed from r"/api/*" to r"/*" to cover all routes
+                 "origins": [
+                     "https://athlete-injury-prediction-system-1.onrender.com",  # YOUR EXACT FRONTEND
+                     "http://localhost:3000",
+                     "http://localhost:5000"
+                 ],
+                 "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+                 "allow_headers": [
+                     "Content-Type", 
+                     "Authorization", 
+                     "Access-Control-Allow-Credentials",
+                     "X-Requested-With"
+                 ],
+                 "supports_credentials": True,
+                 "max_age": 3600
+             }
+         })
     
     # Import and apply configuration
     from config import config
@@ -34,7 +47,7 @@ def create_app(config_name='default'):
     # Initialize core Flask extensions
     db.init_app(app)
     jwt.init_app(app)
-    CORS(app)
+    # REMOVED DUPLICATE CORS(app) CALL HERE
     migrate.init_app(app, db)
     
     # Initialize MongoDB (optional)

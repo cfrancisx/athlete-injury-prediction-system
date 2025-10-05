@@ -39,8 +39,10 @@ def register():
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 
-@auth_bp.route('/login', methods=['POST'])
+@auth_bp.route('/login', methods=['POST', 'OPTIONS'])
 def login():
+    if request.method == 'OPTIONS':
+        return '', 200
     try:
         data = request.get_json()
         email = data.get('email')
